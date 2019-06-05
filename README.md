@@ -19,9 +19,9 @@ We stored the code into different folders according to the respective analyses:
 
 1. Phylogenetic analysis of ANP splice regions (/phylogenetic_analysis/)
 2. Estimation of virus production rates and bootstrapping. (/virus_production_rates/)
-3. Passage prediction and risk scores
+3. Passage prediction and risk scores (/passage_predictions/)
 4. Heatmaps and shiny app (/shiny_app/)
-5. Statistical analysis of surveillance data
+5. Statistical analysis of surveillance data (/surveillance_analysis/)
 
  Folder 1 contains the .xml file to repeat the phylogenetic analysis, this file also contains the sequence alignment. Folder 4 contains more detailed instructions on how to set up the shiny app for interactive heatmaps and on how to generate customized heatmaps.
 

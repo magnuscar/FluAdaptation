@@ -8,7 +8,7 @@ Patricia Domingues, Davide Eletto, Carsten Magnus, Hannah L. Turkington, Stefan 
 
 ## Description
 
-We deployed the web application [online](https://magnuscar.shinyapps.io/FluAdaptation/). However, if you want to re-build it locally you can also download the necessary files from this repository. The calculation of a heatmap for given parameter values needs some time and thus, we pre-calculated and stored heatmaps for the parameter values that one can select in the web app. We added the R-script `heatmap.R` to generate heatmap data for other parameter combinations, that can then either be displayed and stored directly or built into the shiny app.
+We deployed the web application [online](https://magnuscar.shinyapps.io/FluAdaptation/). However, if you want to re-build it locally you can also download the necessary files from this repository. The calculation of a heatmap for given parameter values needs some time and thus, we pre-calculated and stored heatmaps for the parameter values that one can select in the web app. We added the R-script `additional_heatmaps/heatmap.R` to generate heatmap data for other parameter combinations, that can then either be displayed and stored directly or built into the shiny app.
 
 
 -----
