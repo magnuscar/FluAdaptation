@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><beast beautitemplate='Standard' beautistatus='' namespace="beast.core:beast.evolution.alignment:beast.evolution.tree.coalescent:beast.core.util:beast.evolution.nuc:beast.evolution.operators:beast.evolution.sitemodel:beast.evolution.substitutionmodel:beast.evolution.likelihood" required="BEAST v2.5.2" version="2.5">
+
+
+    <data id="2_avian_ANP32A-X1_nt_sequences_NoPrimers" name="alignment">
+                    <sequence id="seq_BLACKBIRD_X1" taxon="BLACKBIRD_X1" totalcount="4" value="----------------AAGGAAGCGCCGGATTCCGACGCCGAGGGATACGTGGAGGGGCTGGATGACGAGGAGGAGGATGAGGAT--------GCTTTAT-------CCC---TAGTGAAAGACCGGGACGACAAGGAAGCGCCGGATTCCGACGCCGAGGGATA"/>
+                    <sequence id="seq_CHICKEN_X1" taxon="CHICKEN_X1" totalcount="4" value="----------------AAAGAAGCACCAGACTCTGATGCAGAGGGCTACGTGGAGGGCTTAGACGATGAGGAGGAAGATGAAGAT--------GTCTTAT-------CTC---TAGTGAAAGATCGGGATGACAAAGAAGCACCGGACTCTGATGCAGAGGGCTA"/>
+                    <sequence id="seq_DUCK_X1" taxon="DUCK_X1" totalcount="4" value="CTATGACCGGGACGACAAAGAAGCGCCGGACTCTGACGCAGAGGGCTACGTGGAGGGCCTAGACGACGAGGAGGAGGATGAAGAT--------GTCTTAT-------CTC---TAGTGAAAGATCGGGACGACAAAGAAGCGCCGGA------------------"/>
+                    <sequence id="seq_GOOSE_X1" taxon="GOOSE_X1" totalcount="4" value="----------------AAAGAAGCGCCGGACTCTGACGCGGAGGGCTACGTGGAGGGCCTAGACGACGAGGAGGAGGATGAAGAT--------GTCTTAT-------CTC---TAGTGAAAGATCGGGACGACAAAGAAGCGCCGGACTCTGACGCGGAGGGCTA"/>
+                    <sequence id="seq_GULL_X1" taxon="GULL_X1" totalcount="4" value="----------------AAAGAAGCACCGGACTCTGATGCAGAGGGCTACGTGGAGGGCTTAGACGACGAGGAAGAAGATGAAGAT--------GTCTTAT-------CTC---TAGTGAAAGATCGGGATGACAAAGAAGCGCCGGACTCTGATGCAGAGGGCTA"/>
+                    <sequence id="seq_HUMAN" taxon="HUMAN" totalcount="4" value="--------GGGACGACAAGGAGGCCCCTGACTCGGATGCTGAGGGCTACGTGGAGGGCCTGGATGATGAGGAGGAGGATGAGGATGAGGAGGAGTATGATGAAGATGCTCAGGTAGTGGAAGACGAGGAGGACGAGGATG-------------------------"/>
+                    <sequence id="seq_MAGPIE_X1" taxon="MAGPIE_X1" totalcount="4" value="----------------AAGGAAGCGCCGGATTCCGACGCCGAGGGATACGTGGAGGGCCTGGATGACGAGGAGGAGGATGAGGAT--------GTTTTAT-------CCC---TAGTGAAAGACCGGGATGACAAGGAAGCGCCGGATTCTGACGCCGAGGGATA"/>
+                    <sequence id="seq_MALLARD_X1" taxon="MALLARD_X1" totalcount="4" value="CTACGACCGGGACGACAAAGAAGCGCCGGACTCTGACGCAGAGGGCTACGTGGAGGGCCTAGACGACGAGGAGGAGGATGAAGAT--------GTCTTAT-------CTC---TAGTGAAAGATCGGGACGACAAAGAAGCGCCGGA------------------"/>
+                    <sequence id="seq_QUAIL_X1" taxon="QUAIL_X1" totalcount="4" value="----------GATGACAAAGAAGCACCAGACTCTGATGCAGAGGGCTACGTGGAGGGCTTAGACGACGAGGAGGAAGATGAAGAT--------GTCTTAT-------CTC---TAGTGAAAGATCGGGATGACAAAGAAGCACCGGACTCTGATGCA--------"/>
+                    <sequence id="seq_SWALLOW_X1" taxon="SWALLOW_X1" totalcount="4" value="----------------AAGGAAGCGCCGGATTCCGACGCCGAGGGATACGTGGAGGGGCTGGACGACGAGGAGGAGGATGAGGAC--------GTTTTAT-------CCC---TAGTGAAAGACCGGGACGACAAGGAAGCGCCGGATTCCGACGCCGAGGGATA"/>
+                    <sequence id="seq_SWAN_X1" taxon="SWAN_X1" totalcount="4" value="----------------AAAGAAGCGCCGGACTCTGACGCAGAGGGCTACGTGGAGGGCCTAGACGACGAGGAGGAAGATGAAGAT--------GTCTTAT-------CTC---TAGTGAAAGATCGGGACGACAAAGAAGCGCCGGACTCTGACGCAGAGGGCTA"/>
+                    <sequence id="seq_TURKEY_X1" taxon="TURKEY_X1" totalcount="4" value="----------------AAAGAAGCACCAGACTCTGATGCAGAGGGCTACGTGGAGGGCTTAGACGATGAGGAGGAAGATGAAGAT--------GTCTTAT-------CTC---TAGTGAAAGATCGGGATGACAAAGAAGCACCGGACTCTGATGCAGAGGGCTA"/>
+                </data>
+
+
+    
+
+
+    
+
+
+    
+<map name="Uniform" >beast.math.distributions.Uniform</map>
+<map name="Exponential" >beast.math.distributions.Exponential</map>
+<map name="LogNormal" >beast.math.distributions.LogNormalDistributionModel</map>
+<map name="Normal" >beast.math.distributions.Normal</map>
+<map name="Beta" >beast.math.distributions.Beta</map>
+<map name="Gamma" >beast.math.distributions.Gamma</map>
+<map name="LaplaceDistribution" >beast.math.distributions.LaplaceDistribution</map>
+<map name="prior" >beast.math.distributions.Prior</map>
+<map name="InverseGamma" >beast.math.distributions.InverseGamma</map>
+<map name="OneOnX" >beast.math.distributions.OneOnX</map>
+
+
+<run id="mcmc" spec="MCMC" chainLength="10000000">
+    <state id="state" storeEvery="5000">
+        <tree id="Tree.t:2_avian_ANP32A-X1_nt_sequences_NoPrimers" name="stateNode">
+            <taxonset id="TaxonSet.2_avian_ANP32A-X1_nt_sequences_NoPrimers" spec="TaxonSet">
+                <alignment idref="2_avian_ANP32A-X1_nt_sequences_NoPrimers"/>
+            </taxonset>
+        </tree>
+        <parameter id="birthRate.t:2_avian_ANP32A-X1_nt_sequences_NoPrimers" name="stateNode">1.0</parameter>
+        <parameter id="kappa.s:2_avian_ANP32A-X1_nt_sequences_NoPrimers" lower="0.0" name="stateNode">2.0</parameter>
+        <parameter id="freqParameter.s:2_avian_ANP32A-X1_nt_sequences_NoPrimers" dimension="4" lower="0.0" name="stateNode" upper="1.0">0.25</parameter>
+    </state>
+
+    <init id="RandomTree.t:2_avian_ANP32A-X1_nt_sequences_NoPrimers" spec="beast.evolution.tree.RandomTree" estimate="false" initial="@Tree.t:2_avian_ANP32A-X1_nt_sequences_NoPrimers" taxa="@2_avian_ANP32A-X1_nt_sequences_NoPrimers">
+        <populationModel id="ConstantPopulation0.t:2_avian_ANP32A-X1_nt_sequences_NoPrimers" spec="ConstantPopulation">
+            <parameter id="randomPopSize.t:2_avian_ANP32A-X1_nt_sequences_NoPrimers" name="popSize">1.0</parameter>
+        </populationModel>
+    </init>
+
+    <distribution id="posterior" spec="util.CompoundDistribution">
+        <distribution id="prior" spec="util.CompoundDistribution">
+            <distribution id="YuleModel.t:2_avian_ANP32A-X1_nt_sequences_NoPrimers" spec="beast.evolution.speciation.YuleModel" birthDiffRate="@birthRate.t:2_avian_ANP32A-X1_nt_sequences_NoPrimers" tree="@Tree.t:2_avian_ANP32A-X1_nt_sequences_NoPrimers"/>
+            <prior id="YuleBirthRatePrior.t:2_avian_ANP32A-X1_nt_sequences_NoPrimers" name="distribution" x="@birthRate.t:2_avian_ANP32A-X1_nt_sequences_NoPrimers">
+                <Uniform id="Uniform.1" name="distr" upper="Infinity"/>
+            </prior>
+            <prior id="KappaPrior.s:2_avian_ANP32A-X1_nt_sequences_NoPrimers" name="distribution" x="@kappa.s:2_avian_ANP32A-X1_nt_sequences_NoPrimers">
+                <LogNormal id="LogNormalDistributionModel.0" name="distr">
+                    <parameter id="RealParameter.1" estimate="false" name="M">1.0</parameter>
+                    <parameter id="RealParameter.2" estimate="false" name="S">1.25</parameter>
+                </LogNormal>
+            </prior>
+        </distribution>
+        <distribution id="likelihood" spec="util.CompoundDistribution" useThreads="true">
+            <distribution id="treeLikelihood.2_avian_ANP32A-X1_nt_sequences_NoPrimers" spec="ThreadedTreeLikelihood" data="@2_avian_ANP32A-X1_nt_sequences_NoPrimers" tree="@Tree.t:2_avian_ANP32A-X1_nt_sequences_NoPrimers">
+                <siteModel id="SiteModel.s:2_avian_ANP32A-X1_nt_sequences_NoPrimers" spec="SiteModel">
+                    <parameter id="mutationRate.s:2_avian_ANP32A-X1_nt_sequences_NoPrimers" estimate="false" name="mutationRate">1.0</parameter>
+                    <parameter id="gammaShape.s:2_avian_ANP32A-X1_nt_sequences_NoPrimers" estimate="false" name="shape">1.0</parameter>
+                    <parameter id="proportionInvariant.s:2_avian_ANP32A-X1_nt_sequences_NoPrimers" estimate="false" lower="0.0" name="proportionInvariant" upper="1.0">0.0</parameter>
+                    <substModel id="hky.s:2_avian_ANP32A-X1_nt_sequences_NoPrimers" spec="HKY" kappa="@kappa.s:2_avian_ANP32A-X1_nt_sequences_NoPrimers">
+                        <frequencies id="estimatedFreqs.s:2_avian_ANP32A-X1_nt_sequences_NoPrimers" spec="Frequencies" frequencies="@freqParameter.s:2_avian_ANP32A-X1_nt_sequences_NoPrimers"/>
+                    </substModel>
+                </siteModel>
+                <branchRateModel id="StrictClock.c:2_avian_ANP32A-X1_nt_sequences_NoPrimers" spec="beast.evolution.branchratemodel.StrictClockModel">
+                    <parameter id="clockRate.c:2_avian_ANP32A-X1_nt_sequences_NoPrimers" estimate="false" name="clock.rate">1.0</parameter>
+                </branchRateModel>
+            </distribution>
+        </distribution>
+    </distribution>
+
+    <operator id="YuleBirthRateScaler.t:2_avian_ANP32A-X1_nt_sequences_NoPrimers" spec="ScaleOperator" parameter="@birthRate.t:2_avian_ANP32A-X1_nt_sequences_NoPrimers" scaleFactor="0.75" weight="3.0"/>
+
+    <operator id="YuleModelTreeScaler.t:2_avian_ANP32A-X1_nt_sequences_NoPrimers" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:2_avian_ANP32A-X1_nt_sequences_NoPrimers" weight="3.0"/>
+
+    <operator id="YuleModelTreeRootScaler.t:2_avian_ANP32A-X1_nt_sequences_NoPrimers" spec="ScaleOperator" rootOnly="true" scaleFactor="0.5" tree="@Tree.t:2_avian_ANP32A-X1_nt_sequences_NoPrimers" weight="3.0"/>
+
+    <operator id="YuleModelUniformOperator.t:2_avian_ANP32A-X1_nt_sequences_NoPrimers" spec="Uniform" tree="@Tree.t:2_avian_ANP32A-X1_nt_sequences_NoPrimers" weight="30.0"/>
+
+    <operator id="YuleModelSubtreeSlide.t:2_avian_ANP32A-X1_nt_sequences_NoPrimers" spec="SubtreeSlide" tree="@Tree.t:2_avian_ANP32A-X1_nt_sequences_NoPrimers" weight="15.0"/>
+
+    <operator id="YuleModelNarrow.t:2_avian_ANP32A-X1_nt_sequences_NoPrimers" spec="Exchange" tree="@Tree.t:2_avian_ANP32A-X1_nt_sequences_NoPrimers" weight="15.0"/>
+
+    <operator id="YuleModelWide.t:2_avian_ANP32A-X1_nt_sequences_NoPrimers" spec="Exchange" isNarrow="false" tree="@Tree.t:2_avian_ANP32A-X1_nt_sequences_NoPrimers" weight="3.0"/>
+
+    <operator id="YuleModelWilsonBalding.t:2_avian_ANP32A-X1_nt_sequences_NoPrimers" spec="WilsonBalding" tree="@Tree.t:2_avian_ANP32A-X1_nt_sequences_NoPrimers" weight="3.0"/>
+
+    <operator id="KappaScaler.s:2_avian_ANP32A-X1_nt_sequences_NoPrimers" spec="ScaleOperator" parameter="@kappa.s:2_avian_ANP32A-X1_nt_sequences_NoPrimers" scaleFactor="0.5" weight="0.1"/>
+
+    <operator id="FrequenciesExchanger.s:2_avian_ANP32A-X1_nt_sequences_NoPrimers" spec="DeltaExchangeOperator" delta="0.01" weight="0.1">
+        <parameter idref="freqParameter.s:2_avian_ANP32A-X1_nt_sequences_NoPrimers"/>
+    </operator>
+
+    <logger id="tracelog" fileName="2_avian_ANP32A-X1_nt_sequences_NoPrimers.log" logEvery="1000" model="@posterior" sanitiseHeaders="true" sort="smart">
+        <log idref="posterior"/>
+        <log idref="likelihood"/>
+        <log idref="prior"/>
+        <log idref="treeLikelihood.2_avian_ANP32A-X1_nt_sequences_NoPrimers"/>
+        <log id="TreeHeight.t:2_avian_ANP32A-X1_nt_sequences_NoPrimers" spec="beast.evolution.tree.TreeHeightLogger" tree="@Tree.t:2_avian_ANP32A-X1_nt_sequences_NoPrimers"/>
+        <log idref="YuleModel.t:2_avian_ANP32A-X1_nt_sequences_NoPrimers"/>
+        <log idref="birthRate.t:2_avian_ANP32A-X1_nt_sequences_NoPrimers"/>
+        <log idref="kappa.s:2_avian_ANP32A-X1_nt_sequences_NoPrimers"/>
+        <log idref="freqParameter.s:2_avian_ANP32A-X1_nt_sequences_NoPrimers"/>
+    </logger>
+
+    <logger id="screenlog" logEvery="1000">
+        <log idref="posterior"/>
+        <log idref="likelihood"/>
+        <log idref="prior"/>
+    </logger>
+
+    <logger id="treelog.t:2_avian_ANP32A-X1_nt_sequences_NoPrimers" fileName="$(tree).trees" logEvery="1000" mode="tree">
+        <log id="TreeWithMetaDataLogger.t:2_avian_ANP32A-X1_nt_sequences_NoPrimers" spec="beast.evolution.tree.TreeWithMetaDataLogger" tree="@Tree.t:2_avian_ANP32A-X1_nt_sequences_NoPrimers"/>
+    </logger>
+
+</run>
+
+</beast>
