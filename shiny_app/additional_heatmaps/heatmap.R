@@ -12,7 +12,7 @@ library(graphics)
 
 ### Calculate risk scores
 
-risk_score_heatmap <- function(v.pE, v.pK, squarenumber = 21, betaK=2.7e-6, deltaK=4, cK=3, betaE=2.7e-6, deltaE=4, cE=3, cinit = c(U = 4e5, IE=0, IK=0, VE=(1-0.2)*400, VK=0.2*400 ), t= seq(0,5,0.1), Npass=5, Tpass=6, fn.out){
+risk_score_heatmap <- function(v.pE, v.pK, squarenumber = 21, betaK=2.7e-6, deltaK=4, cK=3, betaE=2.7e-6, deltaE=4, cE=3, startpercK=0.2, VEplusVK=400, cinit = c(U = 4e5, IE=0, IK=0, VE=NA, VK=NA), t= seq(0,5,0.1), Npass=5, Tpass=6, fol.out){
   
   # This function calculates a matrix of riskscores and stores the matrix
   
@@ -26,14 +26,23 @@ risk_score_heatmap <- function(v.pE, v.pK, squarenumber = 21, betaK=2.7e-6, delt
   # deltaE        infected cell death rate of cells infected with E-virus
   # cK            death rate of K-virus
   # cE            death rate of E-virus
+  # startpercK    start fraction of K-virus
+  # VEplusVE      sum of start concentrations of E- and K-viruses
   # cinit         vector of initial conditions
   # t             vector with time steps
   # Npass		      number of passages
   # Tpass		      time (in steps) in simulation that corresponds to a passaging round
-  # fn.out	      file name of output file .csv
+  # fol.out	      folder name of where the output file should be stored
   ### output:
-  # matrix with fX1, fX3 frequencies and riskscore; this matrix is also stored under fn.out
+  # matrix with fX1, fX3 frequencies and riskscore; this matrix is also stored in fol.out
   
+  # completion of cinit
+  cinit[c("VE", "VK")] <- c(1- startpercK, startpercK) * VEplusVK
+  
+  # definition of output file name
+  fn.out <- paste0(fol.out, "riskmatrix_betaK",betaK,"_deltaK", deltaK,"_cK", cK,"_betaE", betaE,"_deltaE",deltaE,"_cE", cE, "_percK", startpercK,".csv")
+  
+  # definition and filling in risk matrix
   risk.matrix <- matrix(NA, nrow = 0, ncol = 3, dimnames=list( c(), c("fX1", "fX3","riskscore")  ))
   write.table(risk.matrix, fn.out, quote = F, sep = ",", row.names=F)
 
@@ -227,6 +236,17 @@ heatmap_withseparatingline <- function(fol.dat,  betaK, deltaK, cK, betaE, delta
 }
 
 
+
+
+###### Example for function calls
+setwd("/path/to/FluAdaptation/")
+source("/shiny_app/additional_heatmaps/heatmap.R")
+
+### 1. Calculating risk score matrix
+# sen <- read.csv("/data/results/sensitivity_analysis_diffbetadeltacfordiffvir.csv")
+# sen[which(sen[,1]==2.7e-6 & sen[,2]==2.7e-6 & sen[,3]== 4 &  sen[,4]== 4 &  sen[,5]== 3 &  sen[,6]== 3), ]
+v.pE <- c(200, 68.50675, 52.34761)
+v.pK <- c(136.6079, 94.4851, 200)
 
 
 
