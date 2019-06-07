@@ -208,3 +208,30 @@ predicting_passage_model2_diffratesforvir <- function(cinit = c(U = 4e5, IE=0, I
   out
 }
 
+
+########################################################################
+##########      Definition of the normalised risk score      ###########
+########################################################################
+
+
+normalised_risk_score <- function(predictions){
+  
+  # function that calculates the risk score of evolving a K mutation with range: [-1,1]
+  
+  ### input:
+  # predictions: 		matrix with columns passage,  percentPB2.627K as generated with function predicting_passage_model2()
+  ### output:
+  # normalised risk score
+  startK <- predictions[which(predictions[,"passage"]==0) , "percentPB2.627K"]
+  pred <- predictions[, "percentPB2.627K"] - startK	
+  for(i in 1:(length(pred))){
+    if(pred[i] < 0){ 
+      pred[i] <- 	pred[i]/startK
+    }
+    else{
+      pred[i] <- 	pred[i]/(100-startK)
+    }
+  }
+  sum(pred)/ (dim(predictions)[1] -1)
+}
+
