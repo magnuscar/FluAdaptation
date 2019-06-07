@@ -1,0 +1,217 @@
+---
+title: "Determination of CI for virus production rates based on bootstrapping"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# knitr::opts_knit$set(root.dir = '/path/to/FluAdaptation/') ### <<<--- you have to add the path to the folder on your machine here and uncomment this line!!!
+```
+
+## Bootstrapping procedure
+
+To determine the CI for estimation of the virus production rates $p_{E_i}$ and $p_{K_i}$, the virus dynamics model was fitted to the three passaging data sets, in which the ANP variants were expressed separately. For each bootstrap round, the data was resampled and the virus dynamic model fitted to this new data set. These are the resulting fits:
+
+```{r, echo=FALSE}
+source("ANP_model.R")
+Npass <- 5
+fn.boot <- "data/results/estimation_virus_production/CIestimation_"
+fn.pass <- "data/input/ANP_passage_experiment.csv"
+pass <- read.csv(fn.pass)
+	col <- c( rgb(1,0,0,alpha=0.01), rgb(0,1,0,alpha=0.01), rgb(0,0,1,alpha=0.01))
+par(mfrow = c(1,3) )
+		i<- 0
+		for(ANP in paste0("X", 1:3)){
+			i <- i+1
+			zwpass <- pass[which(pass[,"ANP"]==ANP), ]
+			
+			zwboot <- read.csv(paste0(fn.boot,ANP,".csv"))
+			
+			zwboot <- zwboot[which(zwboot[,"convergence"]==0), ]
+			
+			plot(zwpass[,"passage"], zwpass[,"percentK"], pch= c(15,19,17)[i], col = c("red", "green", "blue")[i], xlab="passage", ylab="% K virus", ylim=c(0,100), main=ANP )
+			
+			for(j in 1:(dim(zwboot)[1])){
+				
+				lines(0:Npass, zwboot[j,paste0("percK_pass", 0:Npass)], lwd =0.5, col=col[i] )
+			}
+			
+		}
+
+```
+
+## Determination of 95% confidence intervalls based on the bootstrap estimates
+
+To determine the 95% CI, we look at the three different data sets separately. 
+
+# X1
+Of the 1000 bootstrap estimates, 
+
+```{r, echo=F}
+x1 <- read.csv("data/results/estimation_virus_production/CIestimation_X1.csv")
+print(sum(x1[,"convergence"]==0))
+```
+converged. 
+
+The distribution of the estimates of $p_{E_1}$ and  $p_{K_1}$ is
+
+```{r, echo=F}
+boundK1 <-199
+x1new <- x1[which(x1[,"convergence"]==0),]
+plot(x1new[,1], x1new[,2], xlab="pE1", ylab="pK1")
+lines(rep(boundK1,2),c(0,200), col="gray")
+```
+
+The gray line marks the value of $p_{E_1}$ in which a fraction of
+
+```{r, echo=F}
+nrX1conv <- dim(x1new)[1]
+x1new <- x1new[which(x1new[,"est_pEX1"] > boundK1),]
+print(dim(x1new)[1]/nrX1conv )
+```
+of the estimates lie. To transform the remaining estimates into a confidence interval, we have to find those parameters that lead to the passaging curves lining the band of estimates. The first guess is the smallest and biggest value for $p_{K_1}$ where $p_{E_1}=200$:
+
+```{r}
+range(x1new[which(x1new[,"est_pEX1"] == 200),"est_pKX1"])
+```
+
+Indeed, when plugging in these values, we see that the two $p_{K_1}$ values in combination with $p_{E_1}=200$ form the boundaries of the 95% CI:
+
+```{r, echo=F}
+	zwpass <- pass[which(pass[,"ANP"]=="X1"), ]
+  plot(zwpass[,"passage"], zwpass[,"percentK"], pch= c(15,19,17)[1], col = c("red", "green", "blue")[1], xlab="passage", ylab="% K virus")#, ylim=c(0,100) )
+	for(j in 1:(dim(x1new)[1])){
+		lines(0:Npass, x1new[j,paste0("percK_pass", 0:Npass)], lwd =0.5, col=col[1] )
+	}
+  
+  lines(0:Npass, x1new[which(x1new[,"est_pKX1"] == min(x1new[which(x1new[,"est_pEX1"] == 200),"est_pKX1"]))[1], paste0("percK_pass", 0:Npass)], lwd =2, col=1, lty=1)
+  lines(0:Npass, x1new[which(x1new[,"est_pKX1"] == max(x1new[which(x1new[,"est_pEX1"] == 200),"est_pKX1"]))[1], paste0("percK_pass", 0:Npass)], lwd =2, col=1, lty=2)
+  
+  legend("topright", legend = paste0("est_pEX1=200, est_pKX1=", round(range(x1new[which(x1new[,"est_pEX1"] == 200),"est_pKX1"]), digits=4)), col=1, lty = 1:2, lwd=2)
+```
+
+
+# X2
+Of the 1000 bootstrap estimates, 
+
+```{r, echo=F}
+x2 <- read.csv("data/results/estimation_virus_production/CIestimation_X2.csv")
+print(sum(x2[,"convergence"]==0))
+```
+converged. 
+
+The distribution of the estimates of $p_{E_2}$ and  $p_{K_2}$ is
+
+```{r, echo=F}
+boundK2 <- 6.5
+x2new <- x2[which(x2[,"convergence"]==0),]
+plot(x2new[,1], x2new[,2], xlab="pE2", ylab="pK2")
+lines(c(0,200), rep(boundK2,2), col="gray")
+```
+
+The gray line marks the value of $p_{K_2}$ above which a fraction of
+
+```{r, echo=F}
+nrX2conv <- dim(x2new)[1]
+x2new <- x2new[which(x2new[,"est_pKX2"] > boundK2),]
+print(dim(x2new)[1]/nrX2conv )
+```
+of the estimates lie. To transform the remaining estimates into a confidence interval, we have to find those parameters that lead to the passaging curves lining the band of estimates. The first guess for the lower bound is the pair of $p_{E_2}$ and $p_{K_2}$, for which the value of the first passaging is the lowest:
+
+```{r, echo = F}
+estpK2b <- x2new[order(x2new[,"percK_pass1"]),"est_pKX2"][1]
+estpE2b <- x2new[order(x2new[,"percK_pass1"]),"est_pEX2"][1]
+print(paste0("est_pE2=", round(estpE2b,4), ", est_pK2=", round(estpK2b,4)))
+```
+
+or the pair of $p_{E_2}$ and $p_{K_2}$, for wich the value of the last passaging is the lowest:
+```{r, echo = F}
+estpK2c <- x2new[order(x2new[,"percK_pass5"]),"est_pKX2"][1]
+estpE2c <- x2new[order(x2new[,"percK_pass5"]),"est_pEX2"][1]
+print(paste0("est_pE2=", round(estpE2c,4), ", est_pK2=", round(estpK2c,4)))
+```
+
+For the upper bound we chose the pair of $p_{E_2}$ and $p_{K_2}$, for which the value of the first passaging is the highest:
+
+```{r, echo = F}
+estpK2a <- x2new[order(x2new[,"percK_pass1"],decreasing = T),"est_pKX2"][1]
+estpE2a <- x2new[order(x2new[,"percK_pass1"],decreasing = T),"est_pEX2"][1]
+print(paste0("est_pE2=", round(estpE2a,4), ", est_pK2=", round(estpK2a,4)))
+```
+
+
+
+We plugg in these values and see:
+
+```{r, echo=F}
+	zwpass <- pass[which(pass[,"ANP"]=="X2"), ]
+  plot(zwpass[,"passage"], zwpass[,"percentK"], pch= c(15,19,17)[1], col = c("red", "green", "blue")[2], xlab="passage", ylab="% K virus")#, ylim=c(0,100) )
+	for(j in 1:(dim(x2new)[1])){
+		lines(0:Npass, x2new[j,paste0("percK_pass", 0:Npass)], lwd =0.5, col=col[2] )
+	}
+
+   lines(0:Npass, x2new[which(x2new[,"est_pKX2"] == estpK2a & x2new[,"est_pEX2"] == estpE2a)[1] , paste0("percK_pass", 0:Npass)], lwd =2, col=1, lty=1)
+   lines(0:Npass, x2new[which(x2new[,"est_pKX2"] == estpK2b & x2new[,"est_pEX2"] == estpE2b)[1] , paste0("percK_pass", 0:Npass)], lwd =2, col=1, lty=2)
+   lines(0:Npass, x2new[which(x2new[,"est_pKX2"] == estpK2c & x2new[,"est_pEX2"] == estpE2c)[1] , paste0("percK_pass", 0:Npass)], lwd =2, col=1, lty=3)
+  legend("bottomright", legend = c(paste0("est_pEX2=", round(estpE2a,4),", est_pKX2=", round(estpK2a,4)), paste0("est_pEX2=", round(estpE2b, 4),", est_pKX2=",  round(estpK2b,4)), paste0("est_pEX2=", round(estpE2c,4),", est_pKX2=", round(estpK2c,4))) , col=1, lty = 1:3, lwd=2, cex=0.9)
+```
+
+From this graphical analysis we see that the parameter pairs that best span the 95%CI are $p_{E_2} = 81.8862$, $p_{K_2} = 120.1382$ (upper bound) and $p_{E_2} = 19.2913$, $p_{K_2} = 30.3304$ (lower bound). Be aware that no passaging prediction is able to capture the lower values for the predictions, as two lines are crossing there. We chose the one that seems to cover more variance as a lower bound.
+
+
+# X3
+Of the 1000 bootstrap estimates, 
+
+```{r, echo=F}
+x3 <- read.csv("data/results/estimation_virus_production/CIestimation_X3.csv")
+print(sum(x3[,"convergence"]==0))
+```
+converged. 
+
+The distribution of the estimates of $p_{E_3}$ and  $p_{K_3}$ is
+
+```{r, echo=F}
+boundK3 <- 195
+x3new <- x3[which(x3[,"convergence"]==0),]
+plot(x3new[,1], x3new[,2], xlab="pE3", ylab="pK3")
+lines(c(0,200), rep(boundK3,2), col="gray")
+```
+
+The gray line marks the value of $p_{K_3}$ above which a fraction of
+
+```{r, echo=F}
+nrX3conv <- dim(x3new)[1]
+x3new <- x3new[which(x3new[,"est_pKX3"] > boundK3),]
+print(dim(x2new)[1]/nrX2conv )
+```
+of the estimates lie. To transform the remaining estimates into a confidence interval, we have to find those parameters that lead to the passaging curves lining the band of estimates. The first guess is the biggest value of $p_{E_3}$ where $p_{K_3}=200$, which is
+
+```{r, echo = F}
+estpE3a <- max(x3new[which(x3new[,"est_pKX3"] == 200),"est_pEX3"])
+estpE3a
+```
+and the smallest value of $p_{E_3}$ where $p_{K_2}=200$:
+```{r, echo = F}
+estpE3b <- min(x3new[which(x3new[,"est_pKX3"] == 200),"est_pEX3"])
+estpE3b
+```
+
+
+We plugg in these values and see that these values span the 95% CI:
+
+```{r, echo=F}
+	zwpass <- pass[which(pass[,"ANP"]=="X3"), ]
+  plot(zwpass[,"passage"], zwpass[,"percentK"], pch= c(15,19,17)[1], col = c("red", "green", "blue")[3], xlab="passage", ylab="% K virus")#, ylim=c(0,100) )
+	for(j in 1:(dim(x2new)[1])){
+		lines(0:Npass, x3new[j,paste0("percK_pass", 0:Npass)], lwd =0.5, col=col[3] )
+	}
+
+   lines(0:Npass, x3new[which(x3new[,"est_pKX3"] == 200 & x3new[,"est_pEX3"] == estpE3a)[1] , paste0("percK_pass", 0:Npass)], lwd =2, col=1, lty=1)
+   lines(0:Npass, x3new[which(x3new[,"est_pKX3"] == 200 & x3new[,"est_pEX3"] == estpE3b)[1] , paste0("percK_pass", 0:Npass)], lwd =2, col=1, lty=2)
+   
+  legend("bottomright", legend = c(paste0("est_pEX3=", round(estpE3a,4),", est_pKX3=200"), paste0("est_pEX3=", round(estpE3b,4),", est_pKX3=200")) , col=1, lty = 1:2, lwd=2, cex=0.9)
+```
+
+
+
+

@@ -1,19 +1,22 @@
-##########################################################
-##########         GENERATING HEATMAPS          ##########
-##########################################################
+########################################################################
+######                    Generating heatmaps                     ######
+########################################################################
 
 ###### Required libraries
 
 library(grid)
 library(graphics)
+library(lattice)
 
 ###### set working directory
-setwd("/path/to/FluAdaptation/") ### <<<--- you have to add the path to the folder on your machine here!
+# setwd("/path/to/FluAdaptation/") ### <<<--- you have to add the path to the folder on your machine here and uncomment this line!!!
 
 ###### source required R scripts
 source("ANP_model.R")
 
-######  Functions
+########################################################################
+######                  Definition of functions                   ######
+########################################################################
 
 ### Calculate risk scores
 
@@ -238,7 +241,7 @@ heatmap_withseparatingline <- function(fol.dat,  betaK, deltaK, cK, betaE, delta
                         }
   )
   pdf(fn.out, width=8, height=8, useDingbats=F)
-  plot.int
+    print(plot.int)
   dev.off()
   
 }
@@ -246,35 +249,43 @@ heatmap_withseparatingline <- function(fol.dat,  betaK, deltaK, cK, betaE, delta
 
 
 
-###### Example for function calls
-source("/shiny_app/additional_heatmaps/heatmap.R")
+###################################################
+######       Example for function call       ######
+###################################################
 
-### 1. Calculating risk score matrix
-# The estimates of the virus production rates pE1, pE2, pE3, pK1, pK2, pK3 can either be estimated with the function
-# XXXCM to be added
-# or - for some parameters for beta, delta and c - read out of the table "/data/results/sensitivity_analysis_diffbetadeltacfordiffvir.csv"
-# sen <- read.csv("/data/results/sensitivity_analysis_diffbetadeltacfordiffvir.csv")
-# To display a specific line in this matrix call:
-# sen[which(sen[,1]==2.7e-6 & sen[,2]==2.7e-6 & sen[,3]== 4 &  sen[,4]== 4 &  sen[,5]== 3 &  sen[,6]== 3), ]
-# From this we extracted the following:
-v.pE <- c(200, 68.50675, 52.34761)
-v.pK <- c(136.6079, 94.4851, 200)
-# define the output folder and create this folder:
-fol.out <- "shiny_app/additional_heatmaps/test/"
-system(paste0("mkdir ", fol.out))
-# for this example we do not change the pre-defined parameters
-risk_score_heatmap(v.pE = v.pE, v.pK = v.pK, squarenumber = 6, fol.out = fol.out)
- 
-### 2.  Creation of Heatmap 
-# The data folder is the one we just used to deploy the heatmap matrix:
-fol.dat <- fol.out
-# definition of parameters of the ODE model:
-betaE <- 2.7e-6 
-betaK <- 2.7e-6 
-deltaE <- 4 
-deltaK <- 4 
-cE <- 3 
-cK <- 3
-# we created a heatmap matrix with
-startpercK <- 0.2
-heatmap_withseparatingline(fol.dat,  betaK, deltaK, cK, betaE, deltaE, cE, startpercK, fn.ANP, fn.out , thresholdline = "average")
+## Note: this section is commented out such that this file can be sourced without producing any output.
+
+# source("shiny_app/additional_heatmaps/heatmap.R")
+# 
+# ### 1. Calculating risk score matrix
+# # The estimates of the virus production rates pE1, pE2, pE3, pK1, pK2, pK3 can either be estimated with the function
+# # virus_production_rates/estimating_virus_production_rates.R > estimate_pEpK_ANP() (for beta, delta, c same for both viruses),
+# # or the function XXXCM (for beta, delta, c different for both viruses)
+# # or - for some parameters for beta, delta and c - read out of the table "/data/results/sensitivity_analyses/sensitivity_analysis_diffbetadeltacfordiffvir.csv"
+# # sen <- read.csv("/data/results/sensitivity_analysis_diffbetadeltacfordiffvir.csv")
+# # To display a specific line in this matrix call:
+# # sen[which(sen[,1]==2.7e-6 & sen[,2]==2.7e-6 & sen[,3]== 4 &  sen[,4]== 4 &  sen[,5]== 3 &  sen[,6]== 3), ]
+# # From this we extracted the following:
+# v.pE <- c(200, 68.50675, 52.34761)
+# v.pK <- c(136.6079, 94.4851, 200)
+# # define the output folder and create this folder:
+# fol.out <- "shiny_app/additional_heatmaps/test/"
+# system(paste0("mkdir ", fol.out))
+# # for this example we do not change the pre-defined parameters
+# risk_score_heatmap(v.pE = v.pE, v.pK = v.pK, squarenumber = 6, fol.out = fol.out)
+#  
+# ### 2.  Creation of Heatmap
+# # The data folder is the one we just used to deploy the heatmap matrix:
+# fol.dat <- "shiny_app/additional_heatmaps/test/"
+# # definition of parameters of the ODE model:
+# betaE <- 2.7e-6
+# betaK <- 2.7e-6
+# deltaE <- 4
+# deltaK <- 4
+# cE <- 3
+# cK <- 3
+# # create the heatmap:
+# startpercK <- 0.2
+# fn.ANP <- "data/input/ANPratios.csv"
+# fn.out <- paste0(fol.dat, "heatmap_betaK",betaK,"_deltaK", deltaK,"_cK", cK,"_betaE", betaE,"_deltaE",deltaE,"_cE", cE, "_percK", startpercK,".pdf")
+# heatmap_withseparatingline(fol.dat,  betaK, deltaK, cK, betaE, deltaE, cE, startpercK, fn.ANP, fn.out , thresholdline = "average")
