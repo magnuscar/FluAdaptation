@@ -158,7 +158,10 @@ plot.data.with.prediction.withCIbootstrap  <- function(fn.dat, fn.estCI, ratioXi
 ####################################################
 
 # # Note this section is commented out such that this file can be sourced without producing any output.
-# 
+
+# # Source the necessary functions, but make sure to comment-out this command when sourcing this file (otherwise 
+# #   you will have an infinite loop: 
+# #   source("virus_production_rates/display_bestestimates_CI.R")
 
 # # This is the script for reproducing Figure 4b of the paper:
 # fol.out <- "virus_production_rates/test/"
@@ -168,6 +171,34 @@ plot.data.with.prediction.withCIbootstrap  <- function(fn.dat, fn.estCI, ratioXi
 # fn.estCI <- "data/results/estimation_virus_production/bestfits_pEi_pKi_withbootstrapCI.csv"
 # fn.pdf <- paste0(fol.out, "bestfits_pEi_pKi_withbootstrapCI_averageline.pdf")
 # plot.passigingdata.withCIbootstrap(fn.pass = fn.pass, fn.estCI = fn.estCI, fn.pdf = fn.pdf, average=T)
+# 
+# # This is the script for reproducing Figures 4 c, d, f, g:
+# # Figure 4c
+# fn.dat <- "data/input/Chicken_cells_passaging_DF_1.csv"
+# fn.estCI <- "data/results/estimation_virus_production/bestfits_pEi_pKi_withbootstrapCI.csv"
+# line <- 1
+# ratioXi <- c(66,24.9,9.1)
+# fn.pdf <- paste0(fol.out, "predictions_chickencells_DF_1_withaverageline.pdf")
+# plot.data.with.prediction.withCIbootstrap(fn.dat, fn.estCI, ratioXi, line, fn.pdf, addaverage = T)
+# Figure 4d
+# fn.dat <- "data/input/Chicken_cells_LMH-I.csv"
+# fn.estCI <- "data/results/estimation_virus_production/bestfits_pEi_pKi_withbootstrapCI.csv"
+# line <- 1
+# ratioXi <- c(62.6,26.7,10.7)
+# fn.pdf <- paste0(fol.out, "predictions_chickencells_LMH-I_withaverageline.pdf")
+# plot.data.with.prediction.withCIbootstrap(fn.dat, fn.estCI, ratioXi, line, fn.pdf, addaverage = T)
+# Figure 4f
+# fn.dat <- "data/input/artificial_cell_lines.csv"
+# line <- 7
+# ratioXi <- c(10, 0, 90)
+# fn.pdf <- paste0(fol.out, "predictions_line7_withaverageline.pdf")
+# plot.data.with.prediction.withCIbootstrap(fn.dat, fn.estCI, ratioXi, line, fn.pdf, addaverage = T)
+# # Figure 4g
+# fn.dat <- "data/input/artificial_cell_lines.csv"
+# line <- 9
+# ratioXi <- c(84, 0, 16)
+# fn.pdf <- paste0(fol.out, "predictions_line9_withaverageline.pdf")
+# plot.data.with.prediction.withCIbootstrap(fn.dat, fn.estCI, ratioXi, line, fn.pdf, addaverage = T)
 
 
 

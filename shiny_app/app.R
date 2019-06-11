@@ -9,7 +9,7 @@ library(latticeExtra)
 source("risk_score.R")
 
 
-anp <- read.csv("data/ANPratios.csv")
+anp <- read.csv("data/input/ANPratios.csv")
 
 
 ui <- fluidPage(

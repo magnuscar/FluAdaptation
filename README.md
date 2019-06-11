@@ -27,6 +27,20 @@ We stored the code into different folders according to the respective analyses:
 
 -----
 
+## Figure plotting  
+
+Besides being able to use our modeling framework for analyses of newly collected data on ANP32A splice variants or Influenza sequences found in mammalian/avian species, this repository also contains information on how to reproduce the figures of the paper "Profiling the Host ANP32A Splicing Landscape to Predict Influenza A Virus Polymerase Adaptation". Graphs in Figures 1, 2 and Supplement Figure 1 are produced in Prism based on the data accompying the original paper. The remaining figures include more complicated modeling and can be obtained in the following way:
+
+| Figure | How to |
+|---|---|
+| 3e | Phylogenetic analysis with [BEAST2](https://www.beast2.org/) with the .xml file [Flu_ANP32A.xml](phylogenetic_analysis/Flu_ANP32A.xml). The maximum clade credibility tree can be obtained by TreeAnnotatar and [FigTree](http://tree.bio.ed.ac.uk/software/figtree/). |
+| 4b-d, f, g | function calls explained in [display_bestestimates_CI.R](virus_production_rates/display_bestestimates_CI.R) |
+| 5, SuppFig 2 | function calls explained in [passage_predictions_risk_scores.R](passage_predictions/passage_predictions_risk_scores.R) |
+| 6a | function calls explained in [passage_predictions_risk_scores.R](passage_predictions/passage_predictions_risk_scores.R) |
+| 6b | function calls explained in [heatmap.R](shiny_app/additional_heatmaps/heatmap.R) |
+| 7 | function calls explained in [host_adaptation.R](surveillance_analysis/host_adaptation.R)|
+-----
+
 ## Issues
 
 If you encounter any bugs or have any specific questions about the analysis, please
