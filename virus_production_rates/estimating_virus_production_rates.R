@@ -21,8 +21,6 @@ source("ANP_model.R")
 ####      Case 1: beta, delta, c are the same for both viruses      ####
 ########################################################################
 
-# definition of residual sum of square
-
 rss_for_estimating_pEpK <- function(pEpK, data, cinit = c(U=4e5, IE=0, IK=0, VE=(1-0.1639)*400, VK=0.1639*400 ), t = seq(0,5,0.1), Npass = 5, Tpass = 6, beta = 2.7e-6, delta = 4, c = 3 ){
   
   # function to calculate the residual sum of square between an estimated passaging outcome and the real data
@@ -47,8 +45,6 @@ rss_for_estimating_pEpK <- function(pEpK, data, cinit = c(U=4e5, IE=0, IK=0, VE=
 
 
 
-# use the above rss- function to estimate the virus production rates
-
 estimate_pEpK_ANP <- function(ANP, start.par = c(20,20), fn.data, lower = c(0,0), upper = c(200,200), cinit = c(U=4e5, IE=0, IK=0, VE=(1-0.1639)*400, VK=0.1639*400), t = seq(0,5,0.1), Npass = 5, Tpass = 6, beta = 2.7e-6, delta = 4, c = 3 ){
   
   # function to estimates the virus production rates 
@@ -69,6 +65,57 @@ estimate_pEpK_ANP <- function(ANP, start.par = c(20,20), fn.data, lower = c(0,0)
   estimate
   
 }
+
+
+
+rss_for_estimating_pEonly <- function(pE, pK=15, data, cinit = c(U=4e5, IE=0, IK=0, VE=(1-0.1639)*400, VK=0.1639*400 ), t = seq(0,5,0.1), Npass = 5, Tpass = 6, beta = 2.7e-6, delta = 4, c = 3){
+  
+  # function to calculate the residual sum of square for a fixed pK value, i.e. the same K-virus production for each cell type expressing one of the 3 ANP splice variants
+  # used for sensitivity analysis (see sensitivity_analyses/sensitivityanalyses.R)
+  
+  ### input:
+  # pE, pK		burst sizes of E- and K- viruses, respectively
+  # data		  passage experiment data for one ANP ratio, eg.  data <- subset(read.csv("data/input/ANP_passage_experiment.csv"), ANP=="X1")
+  # cinit     vector with initial conditions, the ratio between E and K virus is the mean of the data points at t=0
+  # t         vector with time steps
+  # Npass		  number of passages
+  # Tpass		  time (in steps) in simulation that corresponds to a passaging round
+  # beta      infection rate
+  # delta     infected cell death rate
+  # c         death rate of virus
+  ### output:
+  # one value for the rss
+  
+  parms <-  c(beta = beta,  delta = delta, pE = pE, pK = pK, c = c)
+  zwischen <- predicting_passage_model2(cinit, parms, t, Npass, Tpass)
+  sum((data[,"percentK"] - zwischen[,"percentPB2.627K"])^2)
+}
+
+
+
+estimate_pEonly_ANP <- function(ANP, start.pE, fn.data, pK = 15, lower = 0, upper = 200, cinit = c(U=4e5, IE=0, IK=0, VE=(1-0.1639)*400, VK=0.1639*400 ), t = seq(0,5,0.1), Npass = 5, Tpass = 6, beta = 2.7e-6, delta = 4, c = 3){
+  
+  # function to estimate the E-virus production rate based on the experimental passaging data
+  # used for sensitivity analysis (see sensitivity_analyses/sensitivityanalyses.R)
+  
+  ### input:
+  # ANP		    character string of the cell line for which the virus production rates should be estimated, either "X1", "X2" or "X3"
+  # start.pE  starting value for pE
+  # fn.data	  file name of data file, ie. fn.data <- "data/input/ANP_passage_experiment.csv"
+  # pK        value for pK
+  # lower     vector with lower bound for pE
+  # upper     vector with upper bound for pE
+  # remaining modelling parameters: see rss_for_estimating_pEonly()
+  ### output:
+  # list created by optim(), for further information on the objectes contained in this list call help(optim)
+  
+  bla <- ANP
+  data <- subset(read.csv(fn.data), ANP==bla)
+  
+  estimate <- optim(start.pE, rss_for_estimating_pEonly, pK=pK, data = data, method="L-BFGS-B", lower=lower, upper=upper, cinit = cinit, t = t, Npass = Npass, Tpass = Tpass, beta = beta, delta = delta, c = c)
+  return(estimate)
+}
+
 
 
 

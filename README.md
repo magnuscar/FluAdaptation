@@ -8,7 +8,8 @@ Patricia Domingues, Davide Eletto, Carsten Magnus, Hannah L. Turkington, Stefan 
 
 ## Description
 
-This repository contains code and data to reproduce the analyses of "Profiling the Host ANP32A Splicing Landscape to Predict Influenza A Virus Polymerase Adaptation" by Domingues, Eletto, Magnus et al (2019). In addition, it contains all necessary code to generate the [shiny app](https://magnuscar.shinyapps.io/FluAdaptation/) on your machine. The analysis was implemented in the freely available [`R`](https://cran.r-project.org/web/checks/check_results_drtmle.html) programming language.
+This repository contains code and data to repeat and extend the analyses of "Profiling the Host ANP32A Splicing Landscape to Predict Influenza A Virus Polymerase Adaptation" by Domingues, Eletto, Magnus et al (2019). In addition, it contains all necessary code to generate the [shiny app](https://magnuscar.shinyapps.io/FluAdaptation/) on your machine. 
+The analysis was implemented in the freely available [`R`](https://cran.r-project.org/web/checks/check_results_drtmle.html) programming language.
 
 
 -----
@@ -22,6 +23,7 @@ We stored the code into different folders according to the respective analyses:
 3. Passage prediction and risk scores (/passage_predictions/)
 4. Heatmaps and shiny app (/shiny_app/)
 5. Statistical analysis of surveillance data (/surveillance_analysis/)
+6. Sensitvity analyses (/sensitivity_analyses/)
 
  Folder 1 contains the .xml file to repeat the phylogenetic analysis, this file also contains the sequence alignment. Folder 4 contains more detailed instructions on how to set up the shiny app for interactive heatmaps and on how to generate customized heatmaps.
 
