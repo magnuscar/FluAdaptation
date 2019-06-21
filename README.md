@@ -25,7 +25,7 @@ We stored the code into different folders according to the respective analyses:
 5. Statistical analysis of surveillance data (/surveillance_analysis/)
 6. Sensitvity analyses (/sensitivity_analyses/)
 
- Folder 1 contains the .xml file to repeat the phylogenetic analysis, this file also contains the sequence alignment. Folder 4 contains more detailed instructions on how to set up the shiny app for interactive heatmaps and on how to generate customized heatmaps.
+ Folder 1 contains the .xml file to repeat the phylogenetic analysis, this file also contains the sequence alignment. Folder 4 contains more detailed instructions on how to set up the shiny app for interactive heatmaps and on how to generate customized heatmaps. Additional data is stored in the [data folder](data/) which consists of one folder with input data and one folder of results of the modelling procedures that are time intensive to produce.
 
 -----
 
@@ -41,6 +41,7 @@ Besides being able to use our modeling framework for analyses of newly collected
 | 6a | function calls explained in [passage_predictions_risk_scores.R](passage_predictions/passage_predictions_risk_scores.R) |
 | 6b | function calls explained in [heatmap.R](shiny_app/additional_heatmaps/heatmap.R) |
 | 7 | function calls explained in [host_adaptation.R](surveillance_analysis/host_adaptation.R)|
+| SuppFig 3| function calls explained in [sensitivityanalyses.R](sensitivity_analyses/sensitivityanalyses.R) |
 -----
 
 ## Issues
