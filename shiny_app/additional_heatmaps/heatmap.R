@@ -260,7 +260,7 @@ heatmap_withseparatingline <- function(fol.dat,  betaK, deltaK, cK, betaE, delta
 # ### 1. Calculating risk score matrix
 # # The estimates of the virus production rates pE1, pE2, pE3, pK1, pK2, pK3 can either be estimated with the function
 # # virus_production_rates/estimating_virus_production_rates.R > estimate_pEpK_ANP() (for beta, delta, c same for both viruses),
-# # or the function XXXCM (for beta, delta, c different for both viruses)
+# # or the function estimate_pEpK_ANP_diffratesforvir() (for beta, delta, c different for both viruses)
 # # or - for some parameters for beta, delta and c - read out of the table "/data/results/sensitivity_analyses/sensitivity_analysis_diffbetadeltacfordiffvir.csv"
 # # sen <- read.csv("/data/results/sensitivity_analysis_diffbetadeltacfordiffvir.csv")
 # # To display a specific line in this matrix call:

@@ -107,7 +107,7 @@ estimate_pEonly_ANP <- function(ANP, start.pE, fn.data, pK = 15, lower = 0, uppe
   # upper     vector with upper bound for pE
   # remaining modelling parameters: see rss_for_estimating_pEonly()
   ### output:
-  # list created by optim(), for further information on the objectes contained in this list call help(optim)
+  # list created by optim(), for further information on the objects contained in this list call help(optim)
   
   bla <- ANP
   data <- subset(read.csv(fn.data), ANP==bla)
@@ -115,7 +115,6 @@ estimate_pEonly_ANP <- function(ANP, start.pE, fn.data, pK = 15, lower = 0, uppe
   estimate <- optim(start.pE, rss_for_estimating_pEonly, pK=pK, data = data, method="L-BFGS-B", lower=lower, upper=upper, cinit = cinit, t = t, Npass = Npass, Tpass = Tpass, beta = beta, delta = delta, c = c)
   return(estimate)
 }
-
 
 
 
@@ -149,6 +148,62 @@ estimate.pEi.pKi.bootstrap <- function(fn.data, ANP, fn.intdat, fn.out, start.pa
   system(paste0("rm ", fn.intdat))
   
   write.table(out, fn.out, append = F, quote = F, sep =",", row.names=F)
+}
+
+
+
+########################################################################
+####  Case 2: beta, delta, c are the different for the two strains  ####
+########################################################################
+
+
+
+rss_for_estimating_pEpK_diffratesforvir <- function(pEpK, data, cinit = c(U = 4e5, IE=0, IK=0, VE=(1-0.1639)*400, VK=0.1639*400 ), t = seq(0,5,0.1), Npass = 5, Tpass = 6, beta_E = 2.7e-6, beta_K = 2.7e-6, delta_E = 4, delta_K =4 , c_E = 3, c_K = 3){
+  
+  # function to calculate the residual sum of square for a fixed pE and pK value
+  # used for sensitivity analysis (see sensitivity_analyses/sensitivityanalyses.R)
+  ### input:
+  # pEpK		  vector with burst sizes of E- and K- viruses
+  # data		  passage experiment data for one ANP ratio, eg.  data <- subset(read.csv("data/input/ANP_passage_experiment.csv"), ANP=="X1")
+  # cinit     vector with initial conditions, the ratio between E and K virus is the mean of the data points at t=0
+  # t         vector with time steps
+  # Npass		  number of passages
+  # Tpass		  time (in steps) in simulation that corresponds to a passaging round
+  # beta_E		infection rate with E-virus  
+  # beta_K		infection rate with K-virus
+  # delta_E	  death rate of cells infected with E-virus 
+  # delta_K  	death rate of cells infected with K-virus
+  # c_E			  E-virus clearance rate 
+  # c_K		  	K-virus clearance rate
+  ### output:
+  # one value for the rss
+
+  parms <- c(beta_E = beta_E, beta_K = beta_K, delta_E = delta_E, delta_K = delta_K , c_E = c_E, c_K = c_K, pE = pEpK[1], pK = pEpK[2])
+  zwischen <- predicting_passage_model2_diffratesforvir(cinit, parms, t, Npass, Tpass)	
+  sum((data[,"percentK"] - zwischen[,"percentPB2.627K"])^2)
+  
+}
+
+
+
+estimate_pEpK_ANP_diffratesforvir <- function(ANP, start.par, fn.data, lower=c(0,0), upper=c(200, 200), cinit = c(U = 4e5, IE=0, IK=0, VE=(1-0.1639)*400, VK=0.1639*400 ), t = seq(0,5,0.1), Npass = 5, Tpass = 6,  beta_E = 2.7e-6, beta_K = 2.7e-6, delta_E = 4, delta_K =4 , c_E = 3, c_K = 3){
+  
+  # function to estimate all pEi and pKi values in case beta, delta and c are differ for the two viruses for one ANP splice variant
+  ### input
+  # ANP		      character string of the cell line for which the virus production rates should be estimated, either "X1", "X2" or "X3"
+  # start.par   vector with starting values for pEi and pKi
+  # fn.data     file name of data fn.data <- "data/input/ANP_passage_experiment.csv"
+  # fn.out      file name of output file
+  # lower       vector with lower bounds for pEi and pKi
+  # upper       vector with upper bounds for pEi and pKi 
+  # remaining parameters are the parameters of the model
+  ### output
+  # list created by optim(), for further information on the objects contained in this list call help(optim)
+  
+  bla <- ANP
+  data <- subset(read.csv(fn.data), ANP==bla)
+  estimate <- optim(start.par, rss_for_estimating_pEpK_diffratesforvir, data = data, cinit = cinit, t = t, Npass = Npass, Tpass = Tpass, beta_E = beta_E, beta_K = beta_K, delta_E = delta_E, delta_K = delta_K , c_E = c_E, c_K = c_K, method="L-BFGS-B", lower=lower, upper=upper)
+  estimate
 }
 
 
